@@ -14,8 +14,25 @@ else {
     //Now if the database is connected then, creating the required table in the database. 
 
     //In sqlite3, db.run() is used to execute the sql queries.  
-    db.run(' CREATE TABLE IF NOT EXISTS posts ( postID INTEGER PRIMARY KEY AUTOINCREMENT, postName TEXT NOT NULL, description TEXT NOT NULL,timestamp TEXT DEFAULT CURRENT_TIMESTAMP)');
+    db.run(`
+        CREATE TABLE IF NOT EXISTS posts (
+            postID INTEGER PRIMARY KEY AUTOINCREMENT,
+            postName TEXT NOT NULL,
+            description TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            userId INTEGER NOT NULL,
+            username TEXT NOT NULL,
+            FOREIGN KEY (userId) REFERENCES users(userId)
+        )
+    `);
 
+    //User table for the users 
+    db.run(`
+        CREATE TABLE IF NOT EXISTS users (
+            userId INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE
+        )
+    `);
 }
 
 module.exports = db; 

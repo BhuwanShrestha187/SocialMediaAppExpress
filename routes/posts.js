@@ -56,21 +56,21 @@ const db = require('../db'); //Importing the database connection
 
 //Since we are using the database to store the posts, we need to change the routes and implement async await.   
 router.post('/', async (req, res) => {
-    const { postName, description } = req.body; //Definately this needs to be passed in the request body!! 
+    const { postName, description, userId, username } = req.body; //Definately this needs to be passed in the request body!! 
 
     //Check if the required fields are sent in the request of not 
-    if (!postName || !description) {
-        return res.status(400).json({ error: 'Post name and description must be providfed!!!!' });
+    if (!postName || !description || !userId || !username) {
+        return res.status(400).json({ error: 'Post name and description with userID and username must be providfed!!!!' });
     }
 
     else {
         //Insert the post into the database. 
         const timestamp = new Date().toISOString();  //Extract the current timestamp  
-        const query = 'INSERT INTO posts (postName, description, timestamp) VALUES (?, ?, ?)'; //? means that the values are not known yet.  
+        const query = 'INSERT INTO posts (postName, description, timestamp, userId, username) VALUES (?, ?, ?, ?, ?)'; //? means that the values are not known yet.  
 
         //Fow async and await, we need to use Promise as it lets us handle the asynchronous operations.   
         const newPost = await new Promise((resolve, reject) => {
-            db.run(query, [postName, description, timestamp], function (err) {
+            db.run(query, [postName, description, timestamp, userId, username], function (err) {
                 if (err) {
                     reject(err); //Means tell the promnise that operation failed!! 
                 }
@@ -79,7 +79,9 @@ router.post('/', async (req, res) => {
                         postID: this.lastID, //the new ID of the post. lastID means the last ID of the post that was inserted. 
                         postName,
                         description,
-                        timestamp
+                        timestamp,
+                        userId,
+                        username
                     }); //This tells the promise that the operation was successful and the new post was created. 
                 }
             });
