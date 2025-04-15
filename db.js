@@ -17,20 +17,10 @@ else {
     db.run(`
         CREATE TABLE IF NOT EXISTS posts (
             postID INTEGER PRIMARY KEY AUTOINCREMENT,
-            postName TEXT NOT NULL,
-            description TEXT NOT NULL,
-            timestamp TEXT NOT NULL,
-            userId INTEGER NOT NULL,
+            userId TEXT NOT NULL, 
             username TEXT NOT NULL,
-            FOREIGN KEY (userId) REFERENCES users(userId)
-        )
-    `);
-
-    //User table for the users 
-    db.run(`
-        CREATE TABLE IF NOT EXISTS users (
-            userId INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE
+            description TEXT NOT NULL, 
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     `);
 }
