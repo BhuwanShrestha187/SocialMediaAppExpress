@@ -9,15 +9,11 @@ const port = 3000; //Defualt port number
 app.use(express.json());
 
 
-//Basic route for POST 
-app.post('/api/post', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ error: 'Name is required' });
-    }
+//Import the posts routes for /api/posts endpoint 
+const postsRoutes = require('./routes/posts');
 
-    res.json({ message: 'Post created successfully', name });
-});
+//Use the posts routes for /api/posts endpoint 
+app.use('/api/posts', postsRoutes);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
