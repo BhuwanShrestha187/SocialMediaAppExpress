@@ -1,11 +1,8 @@
 const express = require('express'); //importing express module  
 const app = express(); //creating express app isntaance 
 
-const port = 3000; //Defualt port number  
-
 //Middleware to parse JSON bodies inthe request 
 app.use(express.json());
-
 
 //Import the posts routes for /api/posts endpoint 
 const postsRoutes = require('./routes/posts');
@@ -25,9 +22,16 @@ app.use('/api/replies/', repliesRoutes);
 //Use the likes routes for /api/likes endpoint
 app.use('/api/likes', likesRoutes);
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// Export the app for testing
+module.exports = app;
+
+// Only start the server if this file is run directly
+if (require.main === module) {
+    const port = 3000; //Default port number
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+}
 
 
 
