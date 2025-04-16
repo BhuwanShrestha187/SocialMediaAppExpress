@@ -101,6 +101,14 @@ router.delete('/:postID', async (req, res) => {
             });
         });
 
+        // Delete all likes for this post
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM likes WHERE postID = ?', [postID], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+
         // Then delete the post itself
         await new Promise((resolve, reject) => {
             db.run('DELETE FROM posts WHERE postID = ?', [postID], function (err) {
@@ -109,7 +117,7 @@ router.delete('/:postID', async (req, res) => {
             })
         })
 
-        return res.status(200).json({ message: 'Post and all associated replies deleted successfully' });
+        return res.status(200).json({ message: 'Post and all associated replies and likes deleted successfully' });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -184,7 +192,8 @@ router.put('/:postID', async (req, res) => {
 });
 
 //==============================================================
-// 5. Now working on the get route for the posts.   
+// 5. Now working on the get route for the posts. If 
+//  user wants to see a specific post, the the default route will be /api/posts/:postID 
 //==============================================================
 
 router.get('/:postID', async (req, res) => {

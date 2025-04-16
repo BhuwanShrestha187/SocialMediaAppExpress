@@ -48,6 +48,23 @@ else {
             console.log('Replies table ready');
         }
     });
+
+    // Create likes table
+    db.run(`
+    CREATE TABLE IF NOT EXISTS likes (
+        likeID INTEGER PRIMARY KEY AUTOINCREMENT,
+        postID INTEGER NOT NULL,
+        userId TEXT NOT NULL,
+        username TEXT NOT NULL,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+   `, (err) => {
+        if (err) {
+            console.log('Error creating likes table:', err.message);
+        } else {
+            console.log('Likes table ready');
+        }
+    });
 }
 
 module.exports = db; 
