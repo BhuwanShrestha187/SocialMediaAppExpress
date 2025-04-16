@@ -16,13 +16,39 @@ else {
     //In sqlite3, db.run() is used to execute the sql queries.  
     db.run(`
         CREATE TABLE IF NOT EXISTS posts (
-            postID INTEGER PRIMARY KEY AUTOINCREMENT,
-            userId TEXT NOT NULL, 
-            username TEXT NOT NULL,
-            description TEXT NOT NULL, 
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+          postID INTEGER PRIMARY KEY AUTOINCREMENT,
+          userId TEXT NOT NULL,
+          username TEXT NOT NULL,
+          description TEXT NOT NULL,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
         )
-    `);
+      `, (err) => {
+        if (err) {
+            console.log('Error creating posts table:', err.message);
+        } else {
+            console.log('Posts table ready');
+        }
+    });
+
+
+    // Create replies table
+    db.run(`
+    CREATE TABLE IF NOT EXISTS replies (
+      replyID INTEGER PRIMARY KEY AUTOINCREMENT,
+      postID INTEGER NOT NULL,
+      userId TEXT NOT NULL,
+      username TEXT NOT NULL,
+      content TEXT NOT NULL,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (postID) REFERENCES posts(postID)
+    )
+  `, (err) => {
+        if (err) {
+            console.log('Error creating replies table:', err.message);
+        } else {
+            console.log('Replies table ready');
+        }
+    });
 }
 
 module.exports = db; 

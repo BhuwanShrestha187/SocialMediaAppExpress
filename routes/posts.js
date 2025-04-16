@@ -10,48 +10,13 @@
 
     1. AT first I used the array to store the post information which was quite easy to implement.  
     2. Now I am using the database to store the post information.  
+    3. Used async and await to handle the asynchronous operations.  
 */
 
 //Import express and router 
 const express = require('express');
 const router = express.Router();  //We need router basically to create routes and then we need to export the router  
 const db = require('../db'); //Importing the database connection   
-
-// //To store the posts, for now I am just using an array to store the post information
-// let posts = [];
-
-// //POST route to create a new post 
-// router.post('/', (req, res) => {
-//     const { postName, description } = req.body;
-
-//     //We need to validate the required fields  
-//     if (!postName || !description) {
-//         return res.status(400).json({ error: 'Post name and description are required' }); //Status 400 is used to indicate that the request is bad 
-//     }
-
-//     //Then if the required fields are present, we need to create a new post  
-//     //At first postID  
-//     const postID = posts.length + 1; //Increase the ID with 1 for each post 
-
-//     //Create the timestamp when the post was created 
-//     const timestamp = new Date().toISOString();
-
-//     //Then only create the post object 
-//     const newPost = {
-//         postID,
-//         postName,
-//         description,
-//         timestamp
-//     };
-
-//     //Now store  the post in the array 
-//     posts.push(newPost);
-
-//     //Then Respond so that the client can get the post details  
-//     res.status(201).json(newPost); //Status 201 is used to indicate that the resource has been created 
-
-// });
-
 
 
 //Since we are using the database to store the posts, we need to change the routes and implement async await.   
@@ -90,8 +55,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-
-
 //Get route to get all the posts 
 router.get('/', async (req, res) => {
     //Retriuve allthe posts from the database
@@ -105,14 +68,10 @@ router.get('/', async (req, res) => {
             }
         })
     });
-
-
     if (!posts) {
         return res.status(404).json({ error: 'No posts found' });
     }
-
     res.json(posts);
-
 });
 
 //Export the router so that it can be used in the app.js file 
