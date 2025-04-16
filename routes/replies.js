@@ -68,11 +68,20 @@ router.get('/:postID', async (req, res) => {
     return res.status(200).json(replies);
 });
 
-// DELETE route to delete a specific reply
-router.delete('/:replyID', async (req, res) => {
+// DELETE route to delete a specific reply from a specific post.  
+router.delete('/:postID/:replyID', async (req, res) => {
+    const postID = req.params.postID;
     const replyID = req.params.replyID;
 
-    // First check if the reply exists
+    //First lets check if the post exists in the database or not.  
+    const post = await new Promise((resolve, reject) => {
+        db.get('SELECT * FROM posts WHERE postID = ?', [postID], (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        });
+    });
+
+    // First check if the reply exists in the database or not.  
     const reply = await new Promise((resolve, reject) => {
         db.get('SELECT * FROM replies WHERE replyID = ?', [replyID], (err, row) => {
             if (err) reject(err);
@@ -94,6 +103,53 @@ router.delete('/:replyID', async (req, res) => {
 
     return res.status(200).json({ message: 'Reply deleted successfully' });
 });
+
+//==============================================================
+// 4. Now lets add the update route for the replies.  
+//==============================================================
+
+router.put('/:postID/:replyID', async (req, res) => {
+    const postID = req.params.postID;
+    const replyID = req.params.replyID;
+    const { content } = req.body;
+
+    if (!content) {
+        return res.status(400).json({ error: 'Content is required to update the reply!!' });
+    }
+
+    //First lets check if the post exists in the database or not.  
+    const post = await new Promise((resolve, reject) => {
+        db.get('SELECT * FROM posts WHERE postID = ?', [postID], (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        })
+    })
+
+    if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+    }
+
+    //First lets check if the reply exists in the database or not.  
+    const reply = await new Promise((resolve, reject) => {
+        db.get('SELECT * FROM replies WHERE replyID = ?', [replyID], (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        })
+    })
+
+    if (!reply) {
+        return res.status(404).json({ error: 'Reply not found' });
+    }
+
+    const updatedReply = await new Promise((resolve, reject) => {
+        db.run('UPDATE replies SET content = ? WHERE replyID = ?', [content, replyID], function (err) {
+            if (err) reject(err);
+            else resolve(this.changes);
+        })
+    })
+
+    return res.status(200).json({ message: 'Reply updated successfully' });
+})
 
 //Export the router
 module.exports = router;
