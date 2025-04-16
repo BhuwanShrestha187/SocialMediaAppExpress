@@ -53,6 +53,19 @@ router.post('/:postID', async (req, res) => { //it  fetch the postId from the ur
         return res.status(201).json(newReply);
     }
 });
+//If user wants to see all the replies, the the default route will be /api/replies/ 
+router.get('/', async (req, res) => {
+    const replies = await new Promise((resolve, reject) => {
+        db.all('SELECT * FROM replies', (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        })
+    })
+
+    return res.status(200).json(replies);
+});
+
+
 
 //Now since we stored the replies in the database, we need to fetch the replies from the database.  
 router.get('/:postID', async (req, res) => {

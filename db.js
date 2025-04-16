@@ -34,15 +34,14 @@ else {
     // Create replies table
     db.run(`
     CREATE TABLE IF NOT EXISTS replies (
-      replyID INTEGER PRIMARY KEY AUTOINCREMENT,
-      postID INTEGER NOT NULL,
-      userId TEXT NOT NULL,
-      username TEXT NOT NULL,
-      content TEXT NOT NULL,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (postID) REFERENCES posts(postID)
+        replyID INTEGER PRIMARY KEY AUTOINCREMENT,
+        postID INTEGER NOT NULL,
+        userId TEXT NOT NULL,
+        username TEXT NOT NULL,
+        content TEXT NOT NULL,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )
-  `, (err) => {
+   `, (err) => {
         if (err) {
             console.log('Error creating replies table:', err.message);
         } else {

@@ -74,6 +74,69 @@ router.get('/', async (req, res) => {
     res.json(posts);
 });
 
+//==============================================================
+// 2. Now working on the delete route for the posts.   
+//==============================================================
+
+router.delete('/:postID', async (req, res) => {
+    const postID = req.params.postID;
+
+    const post = await new Promise((resolve, reject) => {
+        db.get('SELECT * FROM posts WHERE postID = ?', [postID], (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        })
+    })
+
+    if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+    }
+
+    await new Promise((resolve, reject) => {
+        db.run('DELETE FROM posts WHERE postID = ?', [postID], function (err) {
+            if (err) reject(err);
+            else resolve(this.changes);
+        })
+    })
+
+    return res.status(200).json({ message: 'Post deleted successfully' });
+})
+
+//==============================================================
+// 3. Now working on the update route for the posts.   
+//==============================================================
+
+router.put('/:postID', async (req, res) => {
+    const postID = req.params.postID;
+    const { description } = req.body;
+
+    if (!description) {
+        return res.status(400).json({ error: 'Description is required to update the post' });
+    }
+
+    // Check if post exists
+    const post = await new Promise((resolve, reject) => {
+        db.get('SELECT * FROM posts WHERE postID = ?', [postID], (err, row) => {
+            if (err) reject(err);
+            else resolve(row);
+        });
+    });
+
+    if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Update the post
+    await new Promise((resolve, reject) => {
+        db.run('UPDATE posts SET description = ? WHERE postID = ?', [description, postID], function (err) {
+            if (err) reject(err);
+            else resolve(this.changes);
+        });
+    });
+
+    return res.status(200).json({ message: 'Post updated successfully' });
+});
+
 //Export the router so that it can be used in the app.js file 
 module.exports = router;
 
