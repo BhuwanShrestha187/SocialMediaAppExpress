@@ -1,0 +1,109 @@
+Automated Test:
+1.	To perform all the test at once, we can type npm test in the terminal. 
+2.	To perform individual test for posts, likes and replies, we can run:
+   - npx jest tests/posts.test.js 
+   - npx jest tests/replies.test.js
+   - npx jest tests/likes.test.js
+
+Manual Test:
+For manual test we need to install Postman to do this. 
+Steps: 
+1.	For posts: 
+   a.	Creating a post: 
+      i.	Select POST and paste the URL: http://localhost:3000/api/posts
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section: 
+         {
+             "userId": "user123",
+             "username": "testuser",
+             "description": "This is a test post"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 201 Created with a response containing the new post details
+   
+   b.	Getting all posts:
+      i.	Select GET and paste the URL: http://localhost:3000/api/posts
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with an array of all posts
+   
+   c.	Getting a specific post:
+      i.	Select GET and paste the URL: http://localhost:3000/api/posts/{postID}
+         (Replace {postID} with an actual post ID)
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with the requested post details
+   
+   d.	Updating a post:
+      i.	Select PUT and paste the URL: http://localhost:3000/api/posts/{postID}
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section:
+         {
+             "description": "This is an updated post"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 200 OK with a success message
+   
+   e.	Deleting a post:
+      i.	Select DELETE and paste the URL: http://localhost:3000/api/posts/{postID}
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with a success message
+
+2.	For replies:
+   a.	Creating a reply:
+      i.	Select POST and paste the URL: http://localhost:3000/api/replies/{postID}
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section:
+         {
+             "userId": "user456",
+             "username": "replier",
+             "content": "This is a test reply"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 201 Created with a response containing the new reply details
+   
+   b.	Getting all replies for a post:
+      i.	Select GET and paste the URL: http://localhost:3000/api/replies/{postID}
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with an array of all replies for the post
+   
+   c.	Updating a reply:
+      i.	Select PUT and paste the URL: http://localhost:3000/api/replies/{postID}/{replyID}
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section:
+         {
+             "content": "This is an updated reply"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 200 OK with a success message
+   
+   d.	Deleting a reply:
+      i.	Select DELETE and paste the URL: http://localhost:3000/api/replies/{postID}/{replyID}
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with a success message
+
+3.	For likes:
+   a.	Liking a post:
+      i.	Select POST and paste the URL: http://localhost:3000/api/likes/{postID}
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section:
+         {
+             "userId": "user789",
+             "username": "liker"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 201 Created with a response containing the new like details
+   
+   b.	Getting all likes for a post:
+      i.	Select GET and paste the URL: http://localhost:3000/api/likes/{postID}
+      ii.	Click Send
+      iii.	Expected result: Status 200 OK with an array of all likes for the post
+   
+   c.	Unliking a post:
+      i.	Select DELETE and paste the URL: http://localhost:3000/api/likes/{postID}
+      ii.	Select the Body tab, choose raw, and set the format to JSON
+      iii.	Put this in the body section:
+         {
+             "userId": "user789"
+         }
+      iv.	Click Send
+      v.	Expected result: Status 200 OK with a success message
+

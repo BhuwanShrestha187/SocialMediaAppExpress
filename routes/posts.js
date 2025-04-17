@@ -94,7 +94,8 @@ router.delete('/:postID', async (req, res) => {
 
     try {
         // First delete all replies for this post
-        await new Promise((resolve, reject) => {
+
+        const deleteReplies = await new Promise((resolve, reject) => {
             db.run('DELETE FROM replies WHERE postID = ?', [postID], (err) => {
                 if (err) reject(err);
                 else resolve();
@@ -102,7 +103,7 @@ router.delete('/:postID', async (req, res) => {
         });
 
         // Delete all likes for this post
-        await new Promise((resolve, reject) => {
+        const deleteLikes = await new Promise((resolve, reject) => {
             db.run('DELETE FROM likes WHERE postID = ?', [postID], (err) => {
                 if (err) reject(err);
                 else resolve();
@@ -110,7 +111,7 @@ router.delete('/:postID', async (req, res) => {
         });
 
         // Then delete the post itself
-        await new Promise((resolve, reject) => {
+        const deletePost = await new Promise((resolve, reject) => {
             db.run('DELETE FROM posts WHERE postID = ?', [postID], function (err) {
                 if (err) reject(err);
                 else resolve(this.changes);
@@ -181,7 +182,7 @@ router.put('/:postID', async (req, res) => {
         return res.status(404).json({ error: 'Post not found' });
     }
 
-    await new Promise((resolve, reject) => {
+    const updatePost = await new Promise((resolve, reject) => {
         db.run('UPDATE posts SET description = ? WHERE postID = ?', [description, postID], function (err) {
             if (err) reject(err);
             else resolve(this.changes);

@@ -4,26 +4,24 @@ const app = express(); //creating express app isntaance
 //Middleware to parse JSON bodies inthe request 
 app.use(express.json());
 
-//Import the posts routes for /api/posts endpoint 
+//Import the posts routes
 const postsRoutes = require('./routes/posts');
 
-//Import the replies routes for /api/posts/:postID/replies endpoint 
+//Import the replies routes 
 const repliesRoutes = require('./routes/replies');
 
-//Import the likes routes for /api/likes endpoint
+//Import the likes 
 const likesRoutes = require('./routes/likes');
 
-//Use the posts routes for /api/posts endpoint 
+//Use the posts
 app.use('/api/posts', postsRoutes);
 
-//Use the replies routes for /api/replies endpoint 
+//Use the replies
 app.use('/api/replies/', repliesRoutes);
 
-//Use the likes routes for /api/likes endpoint
+//Use the likes routes 
 app.use('/api/likes', likesRoutes);
 
-// Export the app for testing
-module.exports = app;
 
 // Only start the server if this file is run directly
 app.listen(3000, () => {
@@ -31,6 +29,8 @@ app.listen(3000, () => {
 });
 
 
+// Export the app for testing
+module.exports = app;
 
 
 

@@ -36,13 +36,13 @@ beforeAll(async () => {
     postId = response.body.postID;
 });
 
-//Thuis deletes the posts after the tests are done. 
+//delete the post after the tests are done. 
 afterAll(async () => {
     await request(app)
         .delete(`/api/posts/${postId}`);
 });
 
-// This is for the creation of the new replies. 
+// create a reply 
 describe('POST /api/replies/:postID', () => {
     it('should create a new reply', async () => {
         const response = await request(app)
@@ -63,7 +63,7 @@ describe('POST /api/replies/:postID', () => {
     });
 });
 
-//This is for the getting all the replies for the posts created above. 
+//get all replies for a post 
 describe('GET /api/replies/:postID', () => {
     it('should return all replies for a post', async () => {
         const response = await request(app)
@@ -74,7 +74,7 @@ describe('GET /api/replies/:postID', () => {
     });
 });
 
-//This is for the updating the replies for the posts created above. 
+//update a reply 
 describe('PUT /api/replies/:postID/:replyID', () => {
     it('should update a reply', async () => {
         const response = await request(app)
@@ -94,7 +94,7 @@ describe('PUT /api/replies/:postID/:replyID', () => {
     });
 });
 
-//This is for the deleting the replies for the posts created above. 
+//delete a reply 
 describe('DELETE /api/replies/:postID/:replyID', () => {
     it('should delete a reply', async () => {
         const response = await request(app)
