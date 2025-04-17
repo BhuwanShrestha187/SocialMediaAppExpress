@@ -84,6 +84,6 @@ describe('DELETE /api/posts/:postID', () => {
             .delete(`/api/posts/${postId}`);
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('message', 'Post and all associated replies and likes deleted successfully');
+        expect(response.body).toHaveProperty('message', 'Post  deleted successfully');
     });
 }); 

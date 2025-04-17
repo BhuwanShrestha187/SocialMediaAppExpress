@@ -26,12 +26,9 @@ app.use('/api/likes', likesRoutes);
 module.exports = app;
 
 // Only start the server if this file is run directly
-if (require.main === module) {
-    const port = 3000; //Default port number
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-}
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
 
 
 

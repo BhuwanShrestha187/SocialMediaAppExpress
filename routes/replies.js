@@ -106,15 +106,17 @@ router.delete('/:postID/:replyID', async (req, res) => {
         return res.status(404).json({ error: 'Reply not found' });
     }
 
-    // Delete the reply
-    await new Promise((resolve, reject) => {
-        db.run('DELETE FROM replies WHERE replyID = ?', [replyID], function (err) {
-            if (err) reject(err);
-            else resolve(this.changes);
+    else {
+        // Delete the reply
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM replies WHERE replyID = ?', [replyID], function (err) {
+                if (err) reject(err);
+                else resolve(this.changes);
+            });
         });
-    });
 
-    return res.status(200).json({ message: 'Reply deleted successfully' });
+        return res.status(200).json({ message: 'Reply deleted successfully' });
+    }
 });
 
 //==============================================================

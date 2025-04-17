@@ -1,19 +1,25 @@
-const request = require('supertest');
-const app = require('../app');
+/*
 
-// Test data
+    Th
+
+*/  const request = require('supertest'); //We need to import the request from the supertest. 
+const app = require('../app'); //We need to import the app from the app.js file. 
+
+// This ist the sameple test datea for the posts.
 const testPost = {
     userId: "testuser123",
     username: "testuser",
     description: "Test post for replies"
 };
 
+//And thjis is the sample test data for the replies for the posts created above. 
 const testReply = {
     userId: "replyuser123",
     username: "replyuser",
     content: "This is a test reply"
 };
 
+//This is the sample test data for the updated replies for the posts created above. 
 const updatedReply = {
     content: "This is an updated reply"
 };
@@ -21,7 +27,7 @@ const updatedReply = {
 let postId;
 let replyId;
 
-// Setup: Create a post to test replies on
+// At first before testing the replies, make a  new post. 
 beforeAll(async () => {
     const response = await request(app)
         .post('/api/posts')
@@ -30,13 +36,13 @@ beforeAll(async () => {
     postId = response.body.postID;
 });
 
-// Cleanup: Delete the test post after tests
+//Thuis deletes the posts after the tests are done. 
 afterAll(async () => {
     await request(app)
         .delete(`/api/posts/${postId}`);
 });
 
-// Tests for Reply Routes
+// This is for the creation of the new replies. 
 describe('POST /api/replies/:postID', () => {
     it('should create a new reply', async () => {
         const response = await request(app)
@@ -57,6 +63,7 @@ describe('POST /api/replies/:postID', () => {
     });
 });
 
+//This is for the getting all the replies for the posts created above. 
 describe('GET /api/replies/:postID', () => {
     it('should return all replies for a post', async () => {
         const response = await request(app)
@@ -67,6 +74,7 @@ describe('GET /api/replies/:postID', () => {
     });
 });
 
+//This is for the updating the replies for the posts created above. 
 describe('PUT /api/replies/:postID/:replyID', () => {
     it('should update a reply', async () => {
         const response = await request(app)
@@ -86,6 +94,7 @@ describe('PUT /api/replies/:postID/:replyID', () => {
     });
 });
 
+//This is for the deleting the replies for the posts created above. 
 describe('DELETE /api/replies/:postID/:replyID', () => {
     it('should delete a reply', async () => {
         const response = await request(app)
